@@ -1,11 +1,17 @@
 # async_get_vedio-1.0:get_vedio.py
 
 from async_get_vedio import aiofiles
+
 from async_get_vedio import aiohttp
+
 from async_get_vedio import asyncio
+
 from async_get_vedio import AES
+
 from async_get_vedio import os
+
 from async_get_vedio import re
+
 from async_get_vedio import pyautogui as pyg
 
 
@@ -151,42 +157,66 @@ class Async:
 
 
 def main_step_one():
+
     file_path = input(r'请输入一个文件夹地址来存储视频文件,如 C:\Users\admin\xxx:')
+    
     vedio_name = input('请输入该视频的名字:')
+    
     file_creat = File_creat(file_path, vedio_name)
+    
     file_creat.creat()
+    
     file_creat.user_suggestions()
+    
     print('相应的文件夹已经创造完毕!')
+    
     return file_path, vedio_name
 
 
 def main_step_two(file_path, vedio_name):
+
     m3u8_url = input('请输入一个m3u8文件的下载网址,注意:\n该m3u8文件里应含有所有的ts文件的下载网址.\n')
+    
     boss = Async(m3u8_url, file_path, vedio_name)
+    
     asyncio.get_event_loop().run_until_complete(boss.async_main())
+    
     print(vedio_name + '下载完毕,请观看!')
 
 
 def main_step_three(file_path, vedio_name):
+
     del_file_path_list = [rf'{file_path}\{vedio_name}\ts', rf'{file_path}\{vedio_name}\decode_ts']
 
     pyg.hotkey('win', 'r')
+    
     pyg.typewrite('cmd')
+    
     pyg.hotkey('enter')
 
     for del_file_path in del_file_path_list:
+    
         pyg.typewrite(f'del {del_file_path}')
+        
         pyg.hotkey('enter')
+        
         pyg.typewrite('Y')
+        
         pyg.hotkey('enter')
+        
     os.remove(rf'{file_path}\{vedio_name}\ts文件的名称.text')
+    
     os.remove(rf'{file_path}\{vedio_name}\{vedio_name}.m3u8')
 
     pyg.typewrite('exit')
+    
     pyg.hotkey('enter')
 
 
 def main():
+
     file_path, vedio_name = main_step_one()
+    
     main_step_two(file_path, vedio_name)
+    
     main_step_three(file_path,vedio_name)
