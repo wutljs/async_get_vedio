@@ -14,7 +14,6 @@ from async_get_vedio import re
 
 from async_get_vedio import pyautogui as pyg
 
-
 class File_creat:
 
     def __init__(self, file_path, vedio_name):
@@ -33,7 +32,6 @@ class File_creat:
         with open(rf'{self.file_path}\{self.vedio_name}\suggestion.txt', 'w', encoding='utf-8') as fp:
             fp.write(suggestion)
         return None
-
 
 class Async:
 
@@ -155,7 +153,6 @@ class Async:
             os.system(
                 rf'copy /b {self.file_path}\{self.vedio_name}\decode_ts\*.ts {self.file_path}\{self.vedio_name}\{self.vedio_name}.mp4')
 
-
 def main_step_one():
 
     file_path = input(r'请输入一个文件夹地址来存储视频文件,如 C:\Users\admin\xxx:')
@@ -172,7 +169,6 @@ def main_step_one():
     
     return file_path, vedio_name
 
-
 def main_step_two(file_path, vedio_name):
 
     m3u8_url = input('请输入一个m3u8文件的下载网址,注意:\n该m3u8文件里应含有所有的ts文件的下载网址.\n')
@@ -182,7 +178,6 @@ def main_step_two(file_path, vedio_name):
     asyncio.get_event_loop().run_until_complete(boss.async_main())
     
     print(vedio_name + '下载完毕,请观看!')
-
 
 def main_step_three(file_path, vedio_name):
 
@@ -211,7 +206,6 @@ def main_step_three(file_path, vedio_name):
     pyg.typewrite('exit')
     
     pyg.hotkey('enter')
-
 
 def main():
 
