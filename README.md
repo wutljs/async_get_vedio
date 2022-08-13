@@ -14,3 +14,5 @@
 6.建议用户在调用完async_get_vedio. get_vedio.get_mp4_vedio(file_path,vedio_name,m3u8_url)后，立刻调用async_get_vedio. get_vedio.clear_useless_files(file_path,vedio_name)，以确保下一个.mp4文件能够正常下载和不会占用过多的空间去存放没有意义的ts视频。
 
 7.由于pyautogui. typewrite在某种情况时不幸不支持中文，建议输入相关信息时不要输入中文名称。否则async_get_vedio. get_vedio.clear_useless_files(file_path,vedio_name)可能工作失败。
+
+8.样品展示:百度网盘:链接(无提取码)：https://pan.baidu.com/s/1AjnsS5o-qqLIbD1Q7OR2EA?pwd=ys57 
