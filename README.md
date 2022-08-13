@@ -1,5 +1,3 @@
-# async_get_vedio:get_vedio.py
-
 from async_get_vedio import aiofiles
 
 from async_get_vedio import aiohttp
@@ -14,6 +12,7 @@ from async_get_vedio import re
 
 from async_get_vedio import pyautogui as pyg
 
+
 class File_creat:
 
     def __init__(self, file_path, vedio_name):
@@ -27,11 +26,11 @@ class File_creat:
         return None
 
     def user_suggestions(self):
-        suggestion = f'使用这个包前,请确保已经安装好aiohttp,aiofiles,Crypto库.这个包是利用这些库进行进一步分析.\n' \
-                     '第一次编写包,可能功能不太完善.作者由衷的希望各位可以与我交流,欢迎指出我的不足.'
+        suggestion = '具体使用方法参考: https://github.com/wutljs/async_get_vedio .'
         with open(rf'{self.file_path}\{self.vedio_name}\suggestion.txt', 'w', encoding='utf-8') as fp:
             fp.write(suggestion)
         return None
+
 
 class Async:
 
@@ -39,6 +38,7 @@ class Async:
         self.m3u8_url = m3u8_url
         self.file_path = file_path
         self.vedio_name = vedio_name
+
 
     async def decode_one_ts(self, aes, name):
         async with aiofiles.open(rf'{self.file_path}\{self.vedio_name}\ts\{name}', 'rb') as fp1:
@@ -153,66 +153,47 @@ class Async:
             os.system(
                 rf'copy /b {self.file_path}\{self.vedio_name}\decode_ts\*.ts {self.file_path}\{self.vedio_name}\{self.vedio_name}.mp4')
 
-def main_step_one():
+
+def creat_files():
 
     file_path = input(r'请输入一个文件夹地址来存储视频文件,如 C:\Users\admin\xxx:')
-    
     vedio_name = input('请输入该视频的名字:')
-    
     file_creat = File_creat(file_path, vedio_name)
-    
     file_creat.creat()
-    
     file_creat.user_suggestions()
-    
     print('相应的文件夹已经创造完毕!')
-    
     return file_path, vedio_name
 
-def main_step_two(file_path, vedio_name):
+
+def get_mp4_vedio(file_path, vedio_name):
 
     m3u8_url = input('请输入一个m3u8文件的下载网址,注意:\n该m3u8文件里应含有所有的ts文件的下载网址.\n')
-    
     boss = Async(m3u8_url, file_path, vedio_name)
-    
     asyncio.get_event_loop().run_until_complete(boss.async_main())
-    
     print(vedio_name + '下载完毕,请观看!')
 
-def main_step_three(file_path, vedio_name):
+
+def clear_useless_files(file_path, vedio_name):
+
+    def clear_one_file(one_file_path):
+        pyg.typewrite(f'del {one_file_path}')
+        pyg.hotkey('enter')
+        pyg.typewrite('Y')
+        pyg.hotkey('enter')
 
     del_file_path_list = [rf'{file_path}\{vedio_name}\ts', rf'{file_path}\{vedio_name}\decode_ts']
 
     pyg.hotkey('win', 'r')
-    
     pyg.typewrite('cmd')
-    
     pyg.hotkey('enter')
-    
     pyg.hotkey('enter')
 
-    for del_file_path in del_file_path_list:
-    
-        pyg.typewrite(f'del {del_file_path}')
-        
-        pyg.hotkey('enter')
-        
-        pyg.typewrite('Y')
-        
-        pyg.hotkey('enter')
-        
+    for one_file_path in del_file_path_list:
+        clear_one_file(one_file_path)
+
     os.remove(rf'{file_path}\{vedio_name}\ts文件的名称.text')
-    
     os.remove(rf'{file_path}\{vedio_name}\{vedio_name}.m3u8')
 
     pyg.typewrite('exit')
-    
     pyg.hotkey('enter')
 
-def main():
-
-    file_path, vedio_name = main_step_one()
-    
-    main_step_two(file_path, vedio_name)
-    
-    main_step_three(file_path,vedio_name)
