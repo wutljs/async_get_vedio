@@ -188,6 +188,8 @@ def main_step_three(file_path, vedio_name):
     pyg.typewrite('cmd')
     
     pyg.hotkey('enter')
+    
+    pyg.hotkey('enter')
 
     for del_file_path in del_file_path_list:
     
