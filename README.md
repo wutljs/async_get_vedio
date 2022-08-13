@@ -6,7 +6,7 @@
 
 2.async_get_vedio依赖于python一些开源库，所以请确保您已经已经正确下载好如下的第三方库：aiofiles,aiohttp,Crypto,pyautogui。
 
-3.下载这个包的方法为: pip install async_get_cedio
+3.下载这个包的方法为: pip install async_get_vedio
 
 4.使用方法:用户先调用async_get_vedio. get_vedio. creat_files()完成文件夹的创建,该函数会有两个返回值,为file_path和vedio_name;再调用async_get_vedio. get_vedio.get_mp4_vedio(file_path,vedio_name)即可下载一个. mp4文件。
 
