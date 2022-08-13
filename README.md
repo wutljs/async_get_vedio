@@ -165,9 +165,8 @@ def creat_files():
     return file_path, vedio_name
 
 
-def get_mp4_vedio(file_path, vedio_name):
+def get_mp4_vedio(file_path, vedio_name,m3u8_url):
 
-    m3u8_url = input('请输入一个m3u8文件的下载网址,注意:\n该m3u8文件里应含有所有的ts文件的下载网址.\n')
     boss = Async(m3u8_url, file_path, vedio_name)
     asyncio.get_event_loop().run_until_complete(boss.async_main())
     print(vedio_name + '下载完毕,请观看!')
