@@ -1,4 +1,4 @@
-# async_get_vedio-1.0: _ _init_ _.py
+# async_get_vedio: _ _init_ _.py
 
 import asyncio
 
