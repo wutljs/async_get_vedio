@@ -1,4 +1,4 @@
-# async_get_vedio-1.0:get_vedio.py
+# async_get_vedio:get_vedio.py
 
 from async_get_vedio import aiofiles
 
