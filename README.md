@@ -89,14 +89,7 @@ class Async:
             tasks = []
             num = 0
             for ts_url in ts_urls:
-                if num < 10:
-                    name = f'000{num}.ts'
-                elif 10 <= num < 100:
-                    name = f'00{num}.ts'
-                elif 100 <= num < 1000:
-                    name = f'0{num}.ts'
-                else:
-                    name = f'{num}.ts'
+                name = '{:0>5}.ts'.format(num)
                 await fp.write(name + '\n')
                 tasks.append(asyncio.create_task(self.one_ts_download(session, ts_url, name)))
                 num += 1
@@ -180,7 +173,7 @@ def clear_useless_files(file_path, vedio_name):
         pyg.typewrite('Y')
         pyg.hotkey('enter')
 
-    del_file_path_list = [rf'{file_path}\{vedio_name}\ts', rf'{file_path}\{vedio_name}\decode_ts']
+    del_file_path_list = ['',rf'{file_path}\{vedio_name}\ts', rf'{file_path}\{vedio_name}\decode_ts']
 
     pyg.hotkey('win', 'r')
     pyg.typewrite('cmd')
