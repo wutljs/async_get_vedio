@@ -1,44 +1,39 @@
-from async_get_vedio import aiofiles
+import asyncio
 
-from async_get_vedio import aiohttp
+import aiohttp
 
-from async_get_vedio import asyncio
+import aiofiles
 
-from async_get_vedio import AES
+import os
 
-from async_get_vedio import os
+from Crypto.Cipher import AES
 
-from async_get_vedio import re
+import re
 
-from async_get_vedio import pyautogui as pyg
+import shutil
 
 
-class File_creat:
+class File_create:
+    # File_create类根据用户提供的存储路径创建文件夹,来存储相应的视频文件.
+    # 包括ts文件,解密的ts文件(解密可能被加密的ts文件),以及最后的.mp4文件.
 
     def __init__(self, file_path, vedio_name):
         self.file_path = file_path
         self.vedio_name = vedio_name
 
-    def creat(self):
-        os.system(rf'md {self.file_path}\{self.vedio_name}')
+    def create(self):
         os.system(rf'md {self.file_path}\{self.vedio_name}\ts')
         os.system(rf'md {self.file_path}\{self.vedio_name}\decode_ts')
-        return None
-
-    def user_suggestions(self):
-        suggestion = '具体使用方法参考: https://github.com/wutljs/async_get_vedio .'
-        with open(rf'{self.file_path}\{self.vedio_name}\suggestion.txt', 'w', encoding='utf-8') as fp:
-            fp.write(suggestion)
-        return None
 
 
 class Async:
+    # Async类可以根据用户提供的含有ts视频网址的m3u8文件网址来下载ts视频,并且做可能的解密处理.最后合成完整的mp4文件.
+    # 采用异步协程的方式下载相关的视频文件.
 
     def __init__(self, m3u8_url, file_path, vedio_name):
         self.m3u8_url = m3u8_url
         self.file_path = file_path
         self.vedio_name = vedio_name
-
 
     async def decode_one_ts(self, aes, name):
         async with aiofiles.open(rf'{self.file_path}\{self.vedio_name}\ts\{name}', 'rb') as fp1:
@@ -53,7 +48,7 @@ class Async:
             tasks = []
             async for name in fp:
                 name = name.strip('\n')
-                tasks.append(asyncio.create_task(self.decode_one_ts(aes, name)))
+                tasks.append(asyncio.createe_task(self.decode_one_ts(aes, name)))
             await asyncio.wait(tasks)
 
     async def get_key(self, session, key_url):
@@ -115,11 +110,13 @@ class Async:
         ts_urls = []
         async with aiofiles.open(rf'{self.file_path}\{self.vedio_name}\{self.vedio_name}.m3u8', 'r') as fp:
             async for item in fp:
+                # 将key的url提取出来
                 if 'key' in item:
                     key_url = re.compile(r'URI="(?P<key_url>.*?)"', re.S).search(item).group('key_url')
                     if 'http' not in key_url:
                         key_url = await self.url_compose(url_header, key_url)
 
+                # 将文件里的所有ts文件的地址都提取出来
                 if '#' not in item:
                     ts_url = item.strip()
                     if 'http' not in ts_url:
@@ -129,13 +126,15 @@ class Async:
         return key_url, ts_urls
 
     async def async_main(self):
-        timeout = aiohttp.ClientTimeout(total=60)
+        # 设置超时时间,默认为30秒
+        timeout = aiohttp.ClientTimeout(total=30)
         async with aiohttp.ClientSession(timeout=timeout) as session:
             key_url, ts_urls = await self.all_urls_get(session)
+            # print(key_url,ts_urls)
             await self.download_all_ts(session, ts_urls)
         if key_url == '':
             os.system(
-                rf'copy /b {self.file_path}\{self.vedio_name}\ts\*.ts {self.file_path}\{self.vedio_name}\{self.vedio_name}.mp4')
+                rf'copy /b {self.file_path}\{self.vedio_name}\ts\*.ts {self.file_path}\{self.vedio_name}.mp4')
         else:
             try:
                 key = await self.get_key(session, key_url)
@@ -144,48 +143,27 @@ class Async:
                     key = await self.get_key(session1, key_url)
             await self.decode_all_ts(key)
             os.system(
-                rf'copy /b {self.file_path}\{self.vedio_name}\decode_ts\*.ts {self.file_path}\{self.vedio_name}\{self.vedio_name}.mp4')
+                rf'copy /b {self.file_path}\{self.vedio_name}\decode_ts\*.ts {self.file_path}.mp4')
 
 
-def creat_files():
-
-    file_path = input(r'请输入一个文件夹地址来存储视频文件,如 C:\Users\admin\xxx:')
-    vedio_name = input('请输入该视频的名字:')
-    file_creat = File_creat(file_path, vedio_name)
-    file_creat.creat()
-    file_creat.user_suggestions()
+def init_async_get_vedio(file_path, vedio_name):
+    file_create = File_create(file_path, vedio_name)
+    file_create.create()
     print('相应的文件夹已经创造完毕!')
     return file_path, vedio_name
 
 
-def get_mp4_vedio(file_path, vedio_name,m3u8_url):
-
+def get_mp4_vedio(file_path, vedio_name, m3u8_url):
     boss = Async(m3u8_url, file_path, vedio_name)
     asyncio.get_event_loop().run_until_complete(boss.async_main())
-    print(vedio_name + '下载完毕,请观看!')
+    print(vedio_name + '下载完毕!')
+
+    # 清理当前下载的文件,为后续文件的下载做准备
+    shutil.rmtree(rf'{file_path}\{vedio_name}')
 
 
-def clear_useless_files(file_path, vedio_name):
-
-    def clear_one_file(one_file_path):
-        pyg.typewrite(f'del {one_file_path}')
-        pyg.hotkey('enter')
-        pyg.typewrite('Y')
-        pyg.hotkey('enter')
-
-    del_file_path_list = ['',rf'{file_path}\{vedio_name}\ts', rf'{file_path}\{vedio_name}\decode_ts']
-
-    pyg.hotkey('win', 'r')
-    pyg.typewrite('cmd')
-    pyg.hotkey('enter')
-    pyg.hotkey('enter')
-
-    for one_file_path in del_file_path_list:
-        clear_one_file(one_file_path)
-
-    os.remove(rf'{file_path}\{vedio_name}\ts文件的名称.text')
-    os.remove(rf'{file_path}\{vedio_name}\{vedio_name}.m3u8')
-
-    pyg.typewrite('exit')
-    pyg.hotkey('enter')
+def get_vedio(file_path, vedio_name, m3u8_url):
+    '''用户需要依次给出存储文件夹地址,存储的该视频的名称,相应的m3u8文件地址'''
+    init_async_get_vedio(file_path, vedio_name)
+    get_mp4_vedio(file_path, vedio_name, m3u8_url)
 
