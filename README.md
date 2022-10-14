@@ -12,4 +12,4 @@ from Crypto.Cipher import AES
 
 import re
 
-import pyautogui
+import shutil
