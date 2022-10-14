@@ -4,7 +4,7 @@
 
 1.作者在Pypi上传了一个叫做async_get_vedio的包，此文档是其使用的说明文档。具体文件实现方法请查看另外两个branches。
 
-2.async_get_vedio依赖于python一些开源库，所以请确保您已经已经正确下载好如下的第三方库：aiofiles,aiohttp,Crypto,pyautogui。
+2.async_get_vedio依赖于python一些开源库，所以请确保您已经已经正确下载好如下的第三方库：aiofiles,aiohttp,Crypto。
 
 3.下载这个包的方法为: pip install async_get_vedio
 
