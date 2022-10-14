@@ -10,7 +10,7 @@
 
 4.引入方法：  from async_get_vedio.get_vedio import get_vedio
 
-5.使用方法：get_vedio(file_path,vedio_name,m3u8_url)
+5.使用方法：get_vedio ( file_path,vedio_name,m3u8_url )
 
 6.注意事项：***您提供的m3u8_url需要满足：根据这个网址下载的.m3u8文件里面应该含有全部.ts(或者.jpg,.png)文件的下载相关路径。按照提示全部输入相关信息后，您会在您指定的文件夹里面发现您想要的.mp4文件!!!***
 
