@@ -1,21 +1,13 @@
 import asyncio
-
 import aiohttp
-
 import aiofiles
-
 import os
-
 from Crypto.Cipher import AES
-
 import re
-
 import shutil
 
 
 class File_create:
-    # File_create类根据用户提供的存储路径创建文件夹,来存储相应的视频文件.
-    # 包括ts文件,解密的ts文件(解密可能被加密的ts文件),以及最后的.mp4文件.
 
     def __init__(self, file_path, vedio_name):
         self.file_path = file_path
@@ -27,8 +19,6 @@ class File_create:
 
 
 class Async:
-    # Async类可以根据用户提供的含有ts视频网址的m3u8文件网址来下载ts视频,并且做可能的解密处理.最后合成完整的mp4文件.
-    # 采用异步协程的方式下载相关的视频文件.
 
     def __init__(self, m3u8_url, file_path, vedio_name):
         self.m3u8_url = m3u8_url
@@ -147,6 +137,7 @@ class Async:
 
 
 def init_async_get_vedio(file_path, vedio_name):
+
     file_create = File_create(file_path, vedio_name)
     file_create.create()
     print('相应的文件夹已经创造完毕!')
@@ -154,6 +145,7 @@ def init_async_get_vedio(file_path, vedio_name):
 
 
 def get_mp4_vedio(file_path, vedio_name, m3u8_url):
+
     boss = Async(m3u8_url, file_path, vedio_name)
     asyncio.get_event_loop().run_until_complete(boss.async_main())
     print(vedio_name + '下载完毕!')
@@ -163,6 +155,7 @@ def get_mp4_vedio(file_path, vedio_name, m3u8_url):
 
 
 def get_vedio(file_path, vedio_name, m3u8_url):
+
     '''用户需要依次给出存储文件夹地址,存储的该视频的名称,相应的m3u8文件地址'''
     init_async_get_vedio(file_path, vedio_name)
     get_mp4_vedio(file_path, vedio_name, m3u8_url)
