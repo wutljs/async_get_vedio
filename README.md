@@ -1,6 +1,6 @@
 # async_get_vedio
 
-首先确保您已经正确安装了python3.9或.9以上版本的python编译环境。
+首先确保您已经正确安装了python3.8或者3.8以上版本的python编译环境。
 
 1.作者在Pypi上传了一个叫做async_get_vedio的包，此文档是其使用的说明文档。具体文件实现方法请查看另外两个branches。
 
