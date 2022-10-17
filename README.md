@@ -143,27 +143,31 @@ class Async:
                 rf'copy /b {self.file_path}\{self.vedio_name}\decode_ts\*.ts {self.file_path}.mp4')
 
 
-def init_async_get_vedio(file_path, vedio_name):
-
-    file_create = File_create(file_path, vedio_name)
-    file_create.create()
-    print('相应的文件夹已经创造完毕!')
-    return file_path, vedio_name
 
 
-def get_mp4_vedio(file_path, vedio_name, m3u8_url):
-
-    boss = Async(m3u8_url, file_path, vedio_name)
-    asyncio.get_event_loop().run_until_complete(boss.async_main())
-    print(vedio_name + '下载完毕!')
-
-    # 清理当前下载的文件,为后续文件的下载做准备
-    shutil.rmtree(rf'{file_path}\{vedio_name}')
-
-
-def get_vedio(file_path, vedio_name, m3u8_url):
-
+class MainProcess:
     '''用户需要依次给出存储文件夹地址,存储的该视频的名称,相应的m3u8文件地址'''
-    init_async_get_vedio(file_path, vedio_name)
-    get_mp4_vedio(file_path, vedio_name, m3u8_url)
+
+    def __init__(self, file_path, video_name, m3u8_url):
+        self.file_path = file_path
+        self.video_name = video_name
+        self.m3u8_url = m3u8_url
+
+    def __init_async_get_video(self):
+        file_create = File_create(self.file_path, self.video_name)
+        file_create.create()
+        print('相应的文件夹已经创造完毕!')
+        return self.file_path, self.video_name
+
+    def __get_mp4_video(self):
+        boss = Async(self.m3u8_url, self.file_path, self.video_name)
+        asyncio.get_event_loop().run_until_complete(boss.async_main())
+        print(self.video_name + '下载完毕!')
+
+        # 清理当前下载的文件,为后续文件的下载做准备
+        shutil.rmtree(rf'{self.file_path}\{self.video_name}')
+
+    def get_video(self):
+        self.__init_async_get_video()
+        self.__get_mp4_video()
 
