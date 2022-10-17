@@ -146,6 +146,7 @@ class Async:
 
 
 class MainProcess:
+
     '''用户需要依次给出存储文件夹地址,存储的该视频的名称,相应的m3u8文件地址'''
 
     def __init__(self, file_path, video_name, m3u8_url):
