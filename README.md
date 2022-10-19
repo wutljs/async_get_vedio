@@ -47,7 +47,7 @@ class Async:
             tasks = []
             async for name in fp:
                 name = name.strip('\n')
-                tasks.append(asyncio.createe_task(self.decode_one_ts(aes, name)))
+                tasks.append(asyncio.create_task(self.decode_one_ts(aes, name)))
             await asyncio.wait(tasks)
 
     async def get_key(self, session, key_url):
